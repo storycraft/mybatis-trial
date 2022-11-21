@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sh.pancake.database.UserRepository">
+
+    <resultMap id="userResultMap" type="sh.pancake.database.User">
+        <id property="id" column="id" />
+        <result property="primaryEmail" column="primary_email" />
+        <result property="credential" column="credential" />
+        <result property="verifiedAt" column="verified_at" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="createdAt" column="created_at" />
+        <result property="profileName" column="profile_name" />
+        <result property="profileImageUrl" column="profile_image_url" />
+        <result property="permission" column="permission" />
+    </resultMap>
+
+    <insert id="insert" parameterType="sh.pancake.database.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        user (primary_email, credential, verified_at, updated_at, created_at, profile_name, profile_image_url, permission)
+        VALUES (#{primaryEmail}, #{credential}, #{verifiedAt}, #{updatedAt}, #{createdAt}, #{profileName}, #{profileImageUrl}, #{permission})
+    </insert>
+
+    <select id="getUserById" parameterType="_long" resultMap="userResultMap">
+        SELECT id, primary_email, credential, verified_at, updated_at, created_at, profile_name, profile_image_url, permission
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <delete id="removeUser" parameterType="_long">
+        DELETE from user WHERE id = #{id}
+    </delete>
+
+    <update id="updateProfileName" parameterType="_long">
+        UPDATE user SET profile_name = #{profileName} WHERE id = #{id}
+    </update>
+
+    <select id="getAllUsers" resultMap="userResultMap">
+        SELECT id, primary_email, credential, verified_at, updated_at, created_at, profile_name, profile_image_url, permission FROM user
+    </select>
+
+</mapper>
